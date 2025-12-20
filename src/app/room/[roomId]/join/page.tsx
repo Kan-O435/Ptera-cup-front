@@ -1,55 +1,52 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function JoinRoomPage() {
   const params = useParams();
-  const roomId = params.roomId as string;
+  const router = useRouter();
+  const roomId = params?.roomId;
 
-  const [status, setStatus] = useState('connecting');
+  const [nickname, setNickname] = useState('');
 
-  useEffect(() => {
-    if (!roomId) return;
-
-    // ⭐️ API Gateway の WebSocket URL
-    const ws = new WebSocket(
-      `wss://izjcpqec6k.execute-api.ap-southeast-2.amazonaws.com/dev?roomId=${roomId}`
+  if (!roomId) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-black text-white">
+        <p>Room ID が不正です</p>
+      </div>
     );
+  }
 
-    ws.onopen = () => {
-      console.log('WS connected');
+  const handleJoin = () => {
+    if (!nickname) return;
 
-      ws.send(
-        JSON.stringify({
-          action: 'join',
-          roomId,
-        })
-      );
-
-      setStatus('joined');
-    };
-
-    ws.onerror = (e) => {
-      console.error(e);
-      setStatus('error');
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [roomId]);
+    // 待機ページに遷移
+    router.push(`/room/${roomId}/waiting?nickname=${encodeURIComponent(nickname)}`);
+  };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-black text-white">
-      {status === 'connecting' && <p>接続中...</p>}
-      {status === 'joined' && (
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">参加しました！</h1>
-          <p className="text-gray-400">Room ID: {roomId}</p>
-        </div>
-      )}
-      {status === 'error' && <p>接続エラー</p>}
+    <div className="h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
+      <div className="bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-4">🎤 Room に参加</h1>
+
+        <p className="mb-4">ニックネームを入力してください</p>
+        <input
+          type="text"
+          placeholder="ニックネーム"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          className="w-full p-3 rounded text-black mb-4"
+        />
+
+        <button
+          onClick={handleJoin}
+          disabled={!nickname}
+          className="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded text-white font-bold disabled:opacity-50"
+        >
+          参加する
+        </button>
+      </div>
     </div>
   );
 }
