@@ -1,33 +1,32 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const NGROK_BASE_URL =
-  'https://unstaggering-nonresid-xxxx.jp.ngrok-free.app'; 
-// ↑ ⚠️ 必ず自分の ngrok の URL に置き換える
+// ✅ Cloudflare Tunnel の公開URL
+const BASE_URL = 'https://salvador-creation-pills-seo.trycloudflare.com';
 
 export default function RoomPage() {
   const params = useParams();
+  const router = useRouter();
+
   const roomId = params?.roomId as string | undefined;
 
   const [participants, setParticipants] = useState(1);
   const [qrUrl, setQrUrl] = useState('');
+  const [joinUrl, setJoinUrl] = useState('');
 
   useEffect(() => {
     if (!roomId) return;
 
-    // 仮の参加者数（後で WebSocket で置き換え）
     setParticipants(Math.floor(Math.random() * 10) + 1);
 
-    // スマホ参加用 URL（ngrok）
-    const joinUrl = `${NGROK_BASE_URL}/room/${roomId}`;
+    const url = `${BASE_URL}/room/${roomId}`;
+    setJoinUrl(url);
 
-    // 外部 QR API（npm 不要）
     const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
-      joinUrl
+      url
     )}`;
-
     setQrUrl(qr);
   }, [roomId]);
 
@@ -66,16 +65,17 @@ export default function RoomPage() {
 
         <p className="text-xs text-gray-400 mt-4 break-all">
           参加URL：<br />
-          {NGROK_BASE_URL}/room/{roomId}
+          {joinUrl}
         </p>
       </div>
 
       <button
         className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded"
-        onClick={() => alert('次はステージページ + WebSocket')}
+        onClick={() => router.push(`/room/${roomId}/stage`)}
       >
         ステージへ進む
       </button>
+
     </div>
   );
 }
