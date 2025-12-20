@@ -93,7 +93,7 @@ export default function RoomsPage() {
           </div>
           
           <nav className="space-y-8">
-            <button onClick={() => router.push('/rooms/create')} className="group flex items-center gap-5 text-gray-400 hover:text-white transition-all">
+            <button onClick={() => router.push('/room/create')} className="group flex items-center gap-5 text-gray-400 hover:text-white transition-all">
               <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-pink-600 group-hover:text-white group-hover:rotate-90 transition-all text-xl font-light">+</span>
               <span className="font-bold text-lg">ルーム作成</span>
             </button>
