@@ -3,7 +3,7 @@
 export default function RoomQRCode({ roomId }: { roomId: string }) {
   const url =
     typeof window !== 'undefined'
-      ? `${window.location.origin}/room/${roomId}`
+      ? `${window.location.origin}/room/${roomId}/join`
       : '';
 
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
