@@ -13,9 +13,9 @@ export default function CreateRoomButton() {
   return (
     <button
       onClick={createRoom}
-      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg"
     >
-      Roomを作成
+       Roomを作成
     </button>
   );
 }
