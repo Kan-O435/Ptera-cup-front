@@ -1,6 +1,16 @@
 'use client';
 
+import Idol from './Idol';
+
 export default function Stage() {
+  // 3人の配置データ
+  const idols = [
+    // userId: 1, 2, 3 を割り振ることで「別人」として認識させる
+    { pos: [0, 0, 0], delay: 0, userId: 1 },       // センター
+    { pos: [5, 0, -2], delay: 0, userId: 2 },   // 右（大きく離す）
+    { pos: [-5, 0, -2], delay: 0, userId: 3 },  // 左（大きく離す）
+  ];
+
   return (
     <group position={[0, -1, 0]}>
       {/* ======================
@@ -36,20 +46,22 @@ export default function Stage() {
           roughness={1}
         />
       </mesh>
-
-      {/* ======================
-          アイドル（前・明るい）
-         ====================== */}
-      <mesh position={[0, 1.3, 1.2]} castShadow>
-        <capsuleGeometry args={[0.4, 1.2, 6, 12]} />
-        <meshStandardMaterial
-          color="#ff99cc"
-          roughness={0.25}
-          metalness={0.25}
-          emissive="#440018"
-          emissiveIntensity={0.7}
+      
+      {/* アイドル3人衆 */}
+      {idols.map((idol, index) => (
+        <Idol 
+          key={index} 
+          userId={idol.userId} // ★ここが重要！
+          position={idol.pos as [number, number, number]} 
+          delay={idol.delay} 
         />
-      </mesh>
+      ))}
+
+      {/* 照明 */}
+      <ambientLight intensity={1.5} />
+      <spotLight position={[0, 20, 20]} angle={0.5} intensity={1000} castShadow />
+      <pointLight position={[-10, 5, 5]} color="#ff00ff" intensity={500} />
+      <pointLight position={[10, 5, 5]} color="#00ffff" intensity={500} />
     </group>
   );
 }
