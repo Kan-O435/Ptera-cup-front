@@ -6,7 +6,7 @@ export default function HomePage() {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center bg-black text-white gap-6">
-      <h1 className="text-3xl font-bold">🎤 Music Calling App</h1>
+      <h1 className="text-3xl font-bold">Music Calling App</h1>
 
       <button
         onClick={() => router.push('/dashboard')}
