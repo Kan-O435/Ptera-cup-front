@@ -13,7 +13,7 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const url = isLogin ? 'http://localhost:4000/auth/sign_in' : 'http://localhost:4000/auth';
+    const url = isLogin ? 'http://localhost:3001/auth/sign_in' : 'http://localhost:3001/auth';
     
     try {
       const payload = isLogin 
