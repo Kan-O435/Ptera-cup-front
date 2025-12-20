@@ -3,20 +3,49 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 
 const ROOMS = [
-  { id: 496668, name: "あわわ(◍꒪꒳​꒪◍)՞", image: "https://static.showroom-live.com/image/room/cover/d6a4ecc6edcfb03368d5f5d04c2f72a77a210d668449694f880ef5d5f747d549_m.jpeg" },
-  { id: 554312, name: "はおんはここです！", image: "https://static.showroom-live.com/image/room/cover/86f339b9a13c94b2170e0c731731efbc20bacf528187288a18122c5c010ba274_m.png" },
-  { id: 403154, name: "磯部 瑠紅（NGT48）", image: "https://static.showroom-live.com/image/room/cover/a9c23575b74422595fbfe01e904998124fb9c0db91166ca56730fc532b4f5638_m.png" },
+  { id: '1', name: 'Test Room 1', image: '/path/to/image1.jpg' },
+  { id: '2', name: 'Test Room 2', image: '/path/to/image2.jpg' },
+  // 必要に応じて追加
 ];
 
 export default function RoomsPage() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const roomId = searchParams.get('roomId');
+
+  const room = ROOMS.find(r => r.id === roomId);
+
+  if (roomId) {
+    if (room) {
+      return (
+        <div className="h-screen flex items-center justify-center bg-gray-900 text-white p-4">
+          <div className="relative w-full max-w-md bg-gray-800 p-6 rounded-xl shadow-lg text-center">
+            <h1 className="text-2xl font-bold mb-4">{room.name}</h1>
+            <img src={room.image} alt={room.name} className="w-full h-48 object-cover rounded mb-4" />
+            <button
+              className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded"
+              onClick={() => router.push(`/room/${room.id}`)}
+            >
+              入室する
+            </button>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="h-screen flex items-center justify-center bg-black text-white">
+          <p>roomがありません</p>
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="relative h-screen bg-[#080808] text-white overflow-hidden font-sans selection:bg-pink-500">
@@ -66,7 +95,7 @@ export default function RoomsPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/10 to-transparent flex flex-col items-center justify-end pb-12">
                       {isActive && (
                         <button 
-                          onClick={() => router.push(`/rooms/${room.id}`)}
+                          onClick={() => router.push(`/room/${room.id}`)}
                           className="mb-8 bg-pink-600 hover:bg-pink-500 text-white px-14 py-3.5 rounded-full font-bold text-base tracking-widest shadow-lg shadow-pink-500/20 transform hover:scale-105 active:scale-95 transition-all"
                         >
                           入室する

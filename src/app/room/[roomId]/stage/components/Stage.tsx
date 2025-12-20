@@ -6,9 +6,9 @@ export default function Stage() {
   // 3人の配置データ
   const idols = [
     // userId: 1, 2, 3 を割り振ることで「別人」として認識させる
-    { pos: [0, 0, 0], delay: 0, userId: 1 },       // センター
-    { pos: [5, 0, -2], delay: 0, userId: 2 },   // 右（大きく離す）
-    { pos: [-5, 0, -2], delay: 0, userId: 3 },  // 左（大きく離す）
+    { pos: [0, 0.54, 0], delay: 0, userId: 1 },       // センター
+    { pos: [5, 0.54, -2], delay: 0, userId: 2 },   // 右（大きく離す）
+    { pos: [-5, 0.54, -2], delay: 0, userId: 3 },  // 左（大きく離す）
   ];
 
   return (
