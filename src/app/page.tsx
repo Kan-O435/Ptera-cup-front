@@ -5,13 +5,13 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-900 text-white gap-8 p-4">
+    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-pink-900 to-gray-900 text-white gap-8 p-4">
       {/* タイトルセクション */}
       <div className="text-center">
-        <h1 className="text-5xl font-black italic tracking-tighter bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent mb-2">
-          CALL SHARE APP
+        <h1 className="text-5xl font-black italic tracking-tighter bg-gradient-to-r from-red-400 to-pink-600 bg-clip-text text-transparent mb-2">
+          AI-dol
         </h1>
-        <p className="text-gray-400 font-medium">推しのコールを、みんなで共有しよう。</p>
+        <p className="text-gray-400 font-medium">離れていても、みんなでコールしよう。</p>
       </div>
 
       {/* ボタンエリア */}
@@ -27,7 +27,7 @@ export default function HomePage() {
         {/* サインアップボタン */}
         <button
           onClick={() => router.push('/auth?mode=signup')}
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold py-4 rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-pink-500/20"
+          className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-4 rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-pink-500/20"
         >
           新規アカウント作成
         </button>

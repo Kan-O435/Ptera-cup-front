@@ -44,7 +44,7 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
       <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-xl w-96 flex flex-col gap-4">
         <h1 className="text-2xl font-bold text-center text-pink-500">
-          {isLogin ? 'Welcome Back!' : 'Join the Live!'}
+          {isLogin ? 'ログイン' : '新規登録'}
         </h1>
         
         {!isLogin && (

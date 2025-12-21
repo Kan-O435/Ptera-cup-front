@@ -16,7 +16,7 @@ export default function RoomSettings({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <label className="block mb-1">Room 名</label>
+        <label className="block mb-1">ルーム名</label>
         <input
           type="text"
           value={roomName}

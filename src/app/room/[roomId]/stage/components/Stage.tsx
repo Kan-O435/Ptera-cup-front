@@ -89,6 +89,21 @@ export default function Stage({ onLiveEnd }: StageProps) {
   // これを全てのレーザーで共有する（再レンダリングなしで高速連携）
   const energyRef = useRef(0);
 
+  // 背景テクスチャ作成
+  const backgroundTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d')!;
+    const gradient = ctx.createLinearGradient(0, 0, 512, 512);
+    gradient.addColorStop(0, '#111827'); // gray-900
+    gradient.addColorStop(0.5, '#831843'); // pink-900
+    gradient.addColorStop(1, '#111827'); // gray-900
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 512, 512);
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+
   // 1. オーディオシステムの構築
   const [listener] = useState(() => new THREE.AudioListener());
   const [sound] = useState(() => new THREE.Audio(listener));
@@ -161,7 +176,7 @@ export default function Stage({ onLiveEnd }: StageProps) {
       {/* 背景 */}
       <mesh position={[0, 5, -6]}>
         <boxGeometry args={[16, 10, 0.5]} />
-        <meshStandardMaterial color="#050505" roughness={1} />
+        <meshBasicMaterial map={backgroundTexture} />
       </mesh>
       
       {/* アイドルはマウント時はそのまま表示 */}

@@ -20,10 +20,10 @@ export default function RoomPage() {
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
       <div className="relative w-full max-w-md bg-gray-800 p-6 rounded-xl shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">🎉 Room を作成しました！</h1>
+        <h1 className="text-2xl font-bold mb-4">ルームを作成しました！</h1>
 
         <p className="mb-4">
-          Room ID：
+          ルームID：
           <span className="ml-2 font-mono bg-black px-2 py-1 rounded">
             {roomId}
           </span>
