@@ -36,21 +36,19 @@ export default function RoomsPage() {
         </div>
       </button>
 
-      {/* メインのスライド（中間サイズ調整版） */}
+      {/* メインのスライド */}
       <main className={`flex-1 flex flex-col items-center justify-center transition-all duration-1000 h-full ${isOpen ? 'pr-64 blur-md opacity-30' : 'pr-0'}`}>
-        
-        {/* max-w-6xl でちょうど良いサイズ感に */}
         <div className="w-full max-w-6xl px-4"> 
           <Swiper
             effect={'coverflow'}
             centeredSlides={true}
-            slidesPerView={1.5}  // 中間の 1.5。左右もしっかり見えつつ真ん中も大きい
+            slidesPerView={1.5}
             loop={true}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[EffectCoverflow, Autoplay]}
             coverflowEffect={{ 
               rotate: 0, 
-              stretch: -20,    // 少し重ねることで密度をアップ
+              stretch: -20,
               depth: 200, 
               modifier: 1, 
               slideShadows: false 
@@ -100,7 +98,10 @@ export default function RoomsPage() {
               <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-pink-600 group-hover:text-white group-hover:rotate-90 transition-all text-xl font-light">+</span>
               <span className="font-bold text-lg">ルーム作成</span>
             </button>
-            <button className="flex items-center gap-5 text-gray-400 hover:text-white transition-all group">
+            <button 
+              onClick={() => router.push('/room/upload')}  // ← ここを追加
+              className="flex items-center gap-5 text-gray-400 hover:text-white transition-all group"
+            >
               <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-lg group-hover:bg-violet-600 group-hover:text-white transition-all">🎵</span>
               <span className="font-bold text-lg">楽曲をアップロード</span>
             </button>
@@ -108,9 +109,7 @@ export default function RoomsPage() {
         </div>
       </aside>
 
-      
-
-      {/* 背景の装飾（薄いグラデーションの光） */}
+      {/* 背景の装飾 */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-500/10 blur-[120px] rounded-full pointer-events-none" />
     </div>
