@@ -2,9 +2,15 @@
 
 import { useParams, useRouter } from 'next/navigation';
 
+import { useEffect, useState } from 'react';
+
+const BASE_URL = 'https://salvador-creation-pills-seo.trycloudflare.com';
+
+
 export default function RoomPage() {
   const params = useParams();
   const router = useRouter();
+
 
   const roomId = params?.roomId as string | undefined;
   const participants = 1; // 固定
@@ -20,6 +26,7 @@ export default function RoomPage() {
     `
   };
 
+
   if (!roomId) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-900 text-white">
@@ -29,6 +36,7 @@ export default function RoomPage() {
   }
 
   return (
+
     <div 
       className="h-screen flex flex-col items-center justify-center p-6 bg-cover bg-center bg-no-repeat relative overflow-hidden"
       style={{ backgroundImage: "url('/bg/bg.png')" }}
@@ -56,6 +64,7 @@ export default function RoomPage() {
             >
               {roomId}
             </div>
+
           </div>
 
           {/* 参加者数表示エリア */}
@@ -84,6 +93,7 @@ export default function RoomPage() {
       {/* 演出用の光 */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-purple-600/30 rounded-full blur-[150px] -z-10"></div>
       <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-600/30 rounded-full blur-[150px] -z-10"></div>
+
     </div>
   );
 }

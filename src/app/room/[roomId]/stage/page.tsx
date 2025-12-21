@@ -5,9 +5,15 @@ import { OrbitControls } from '@react-three/drei';
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Stage from './components/Stage';
-import Audience from './components/Audience';
+// import Audience from './components/Audience';
+import Penlights from './components/Penlights';
+import { useState, useEffect } from 'react';
+
+// ✅ WebSocket URL（Lambda + API Gateway）
+const WS_URL = 'wss://xxxx.execute-api.ap-southeast-2.amazonaws.com/dev';
 
 export default function StagePage() {
+
   const [isLiveEnded, setIsLiveEnded] = useState(false);
   const router = useRouter();
 
@@ -21,6 +27,8 @@ export default function StagePage() {
     audioRef.current.currentTime = 0; // 連打対応
     audioRef.current.play();
   };
+
+
 
   return (
     <div className="h-screen w-screen bg-black relative">
@@ -38,17 +46,13 @@ export default function StagePage() {
           position={[0, 10, 12]}
           intensity={1.2}
         />
+       {/* アイドル専用スポットライト */}
 
-        <spotLight
-          position={[0, 12, 3.5]}
-          intensity={3.5}
-          angle={0.35}
-          penumbra={0.6}
-          castShadow
-        />
+
 
         <Stage onLiveEnd={() => setIsLiveEnded(true)} />
         <Audience count={30} />
+
 
         <OrbitControls
           enablePan={false}
