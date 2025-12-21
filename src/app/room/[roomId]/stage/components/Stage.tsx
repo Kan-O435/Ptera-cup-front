@@ -1,57 +1,72 @@
 'use client';
 
+import React from 'react';
+import { useEffect } from 'react';
+import useSound from 'use-sound'; // ★追加
 import Idol from './Idol';
 
-export default function Stage() {
+type StageProps = {
+  onLiveEnd: () => void;
+};
+
+export default function Stage({ onLiveEnd }: StageProps) {
+  // 1. 音源の設定 (public/sounds/live-bgm2.mp3 を想定)
+  const [play, { stop }] = useSound('/sounds/live-bgm2.mp3', {
+    volume: 0.5,
+    interrupt: true, // 重複再生を防止
+    onend: () => {
+      onLiveEnd();
+    }
+  });
+
+  // 2. マウント時に再生を開始
+  useEffect(() => {
+    play();
+    return () => stop(); // ステージを離れる時に音を止める
+  }, [play, stop]);
+
   // 3人の配置データ
   const idols = [
-    // userId: 1, 2, 3 を割り振ることで「別人」として認識させる
-    { pos: [0, 0, 0], delay: 0, userId: 1 },       // センター
-    { pos: [5, 0, -2], delay: 0, userId: 2 },   // 右（大きく離す）
-    { pos: [-5, 0, -2], delay: 0, userId: 3 },  // 左（大きく離す）
+    { pos: [0, 0, 0], delay: 0, userId: 1 },    // センター
+    { pos: [5, 0, -2], delay: 0, userId: 2 },   // 右
+    { pos: [-5, 0, -2], delay: 0, userId: 3 },  // 左
   ];
 
   return (
     <group position={[0, -1, 0]}>
       {/* ======================
-          ステージ床（明るめ）
+          ステージ床
+          onClick を追加して自動再生ブロック対策
          ====================== */}
-      <mesh receiveShadow>
+      <mesh 
+        receiveShadow 
+        onClick={() => play()} // ★クリックしたら音が鳴るようにする
+      >
         <boxGeometry args={[16, 1, 8]} />
         <meshStandardMaterial
-          color="#3a3a3a"   // ← 明るく
+          color="#3a3a3a"
           roughness={0.6}
           metalness={0.15}
         />
       </mesh>
 
-      {/* ======================
-          ステージ前縁
-         ====================== */}
+      {/* ステージ前縁 */}
       <mesh position={[0, -0.45, 4.05]}>
         <boxGeometry args={[16, 0.1, 0.2]} />
-        <meshStandardMaterial
-          color="#666"
-          roughness={0.6}
-        />
+        <meshStandardMaterial color="#666" roughness={0.6} />
       </mesh>
 
-      {/* ======================
-          背景（黒幕）
-         ====================== */}
+      {/* 背景（黒幕） */}
       <mesh position={[0, 5, -6]}>
         <boxGeometry args={[16, 10, 0.5]} />
-        <meshStandardMaterial
-          color="#050505"
-          roughness={1}
-        />
+        <meshStandardMaterial color="#050505" roughness={1} />
       </mesh>
       
       {/* アイドル3人衆 */}
       {idols.map((idol, index) => (
         <Idol 
           key={index} 
-          userId={idol.userId} // ★ここが重要！
+          userId={idol.userId} 
           position={idol.pos as [number, number, number]} 
           delay={idol.delay} 
         />

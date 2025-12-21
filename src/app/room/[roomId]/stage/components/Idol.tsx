@@ -54,34 +54,57 @@ export default function Idol({ position, delay = 0, userId }: IdolProps) {
   }, [gltf]);
 
   // アニメーションループ
+  // アニメーションループ
+  // アニメーションループ
   useFrame((state, delta) => {
     if (!vrm || !vrm.humanoid) return;
 
     vrm.update(delta);
     const t = state.clock.elapsedTime + delay;
-    const beat = t * 6; // テンポ
+    const beat = t * 7; // ダンスのテンポ
 
+    // --- 1. ここでボーンを取得（これが漏れていました） ---
     const getBone = (name: string) => vrm.humanoid.getNormalizedBoneNode(name);
     
-    // ボーン取得
     const hips = getBone('hips');
-    const rUArm = getBone('rightUpperArm');
-    const rLArm = getBone('rightLowerArm');
-    const lUArm = getBone('leftUpperArm');
-    const lLArm = getBone('leftLowerArm');
+    const lUArm = getBone('leftUpperArm');   // ← 左腕(上)
+    const rUArm = getBone('rightUpperArm');  // ← 右腕(上)
+    const lLArm = getBone('leftLowerArm');   // ← 左腕(下/肘)
+    const rLArm = getBone('rightLowerArm');  // ← 右腕(下/肘)
+    const head = getBone('head');
 
-    // 激しいジャンプ
+    // --- 2. 動きの計算 ---
+    const swingL = Math.sin(beat);
+    const swingR = Math.sin(beat + Math.PI); // 180度ずらして交互にする
+
+    // --- 3. 全体の揺れ ---
     if (hips) {
-      hips.position.y = Math.abs(Math.sin(beat)) * 0.15;
-      hips.rotation.y = Math.sin(beat * 0.5) * 0.2;
+      hips.position.y = Math.abs(Math.sin(beat)) * 0.08;
     }
 
-    // 腕を上下に振る
-    const armSwing = Math.sin(beat) * 0.5;
-    if (rUArm) rUArm.rotation.x = -11.0 + armSwing;
-    if (rLArm) rLArm.rotation.x = -0.5 + armSwing * 0.5;
-    if (lUArm) lUArm.rotation.x = -11.0 - armSwing;
-    if (lLArm) lLArm.rotation.x = -0.5 - armSwing * 0.5;
+    // --- 4. 腕のポーズ（めり込み対策：前へ出す） ---
+    const forwardAngle = 2.5; // マイナスを大きくするとより前へ
+
+    if (lUArm) {
+      lUArm.rotation.z = 1.1 + swingL * 0.4;
+      lUArm.rotation.x = forwardAngle; // 前に突き出す
+      lUArm.rotation.y = 0.2;          // 少し外側にひねる
+    }
+    
+    if (rUArm) {
+      rUArm.rotation.z = -1.1 + swingR * 0.4;
+      rUArm.rotation.x = forwardAngle; // 前に突き出す
+      rUArm.rotation.y = -0.2;         // 少し外側にひねる
+    }
+
+    // --- 5. 肘のポーズ ---
+    if (lLArm) lLArm.rotation.z = 0.5;
+    if (rLArm) rLArm.rotation.z = -0.5;
+
+    // --- 6. 頭の揺れ ---
+    if (head) {
+      head.rotation.y = Math.sin(beat * 0.5) * 0.1;
+    }
   });
 
   return (
@@ -89,7 +112,7 @@ export default function Idol({ position, delay = 0, userId }: IdolProps) {
       {vrm && (
         <primitive 
           object={vrm.scene} 
-          position={[0, 2, 0]} //上に2m持ち上げる
+          position={[0, 2.85, 0]} //上に2m持ち上げる
           rotation={[0, Math.PI, 0]} 
           scale={[3, 3, 3]} 
         />

@@ -2,10 +2,15 @@
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Stage from './components/Stage';
 import Audience from './components/Audience';
 
 export default function StagePage() {
+  const [isLiveEnded, setIsLiveEnded] = useState(false);
+  const router = useRouter();
+
   return (
     <div className="h-screen w-screen bg-black">
       <Canvas
@@ -34,7 +39,7 @@ export default function StagePage() {
         />
 
         {/* ステージ */}
-        <Stage />
+        <Stage onLiveEnd={() => setIsLiveEnded(true)} />
 
         {/* 観客（暗め） */}
         <Audience count={30} />
@@ -47,6 +52,15 @@ export default function StagePage() {
           maxPolarAngle={Math.PI / 2.3}
         />
       </Canvas>
+
+      {isLiveEnded && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg text-center text-white">
+            <p className="text-lg mb-4">ライブは終了しました</p>
+            <button onClick={() => router.push('/dashboard')} className="bg-blue-500 text-white px-4 py-2 rounded">戻る</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
