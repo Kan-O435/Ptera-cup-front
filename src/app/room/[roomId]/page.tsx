@@ -1,83 +1,99 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
+
 import { useEffect, useState } from 'react';
 
 const BASE_URL = 'https://salvador-creation-pills-seo.trycloudflare.com';
+
 
 export default function RoomPage() {
   const params = useParams();
   const router = useRouter();
 
-  const roomId = params?.roomId;
-  const [participants, setParticipants] = useState(1);
-  const [qrUrl, setQrUrl] = useState('');
-  const [joinUrl, setJoinUrl] = useState('');
 
-  useEffect(() => {
-    if (!roomId) return;
+  const roomId = params?.roomId as string | undefined;
+  const participants = 1; // 固定
 
-    // ここではダミーで参加者数表示（後でWebSocketで同期）
-    setParticipants(Math.floor(Math.random() * 10) + 1);
+  // 共通の縁取りスタイル
+  const textStrokeStyle = {
+    textShadow: `
+      3px 3px 0 #000,
+      -3px 3px 0 #000,
+      3px -3px 0 #000,
+      -3px -3px 0 #000,
+      0 4px 10px rgba(0,0,0,0.8)
+    `
+  };
 
-    // 参加用URL
-    const url = `${BASE_URL}/room/${roomId}/stage`;
-    setJoinUrl(url);
-
-    // QRコード生成URL
-    const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}`;
-    setQrUrl(qr);
-  }, [roomId]);
 
   if (!roomId) {
     return (
-      <div className="h-screen flex items-center justify-center bg-black text-white">
-        <p>Room ID が不正です</p>
+      <div className="h-screen flex items-center justify-center bg-gray-900 text-white">
+        <p className="text-lg">Room ID が不正です</p>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
-      <div className="relative w-full max-w-md bg-gray-800 p-6 rounded-xl shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">🎉 Room を作成しました！</h1>
 
-        <p className="mb-2">
-          Room ID：
-          <span className="ml-2 font-mono bg-black px-2 py-1 rounded">
-            {roomId}
-          </span>
-        </p>
+    <div 
+      className="h-screen flex flex-col items-center justify-center p-6 bg-cover bg-center bg-no-repeat relative overflow-hidden"
+      style={{ backgroundImage: "url('/bg/bg.png')" }}
+    >
+      {/* 背景オーバーレイ（ライブ前の高揚感を出すために少し暗めに） */}
+      <div className="absolute inset-0 bg-black/50 -z-10"></div>
 
-        <p className="mb-4">参加者数：{participants} 人</p>
+      {/* メインカード：半透明にして背景を透かす */}
+      <div className="relative w-full max-w-md bg-gray-900/80 backdrop-blur-md p-10 rounded-[40px] shadow-2xl flex flex-col items-center text-center border-2 border-white/20">
+        
+        <h1 
+          className="text-4xl font-black italic tracking-tighter text-white mb-8"
+          style={textStrokeStyle}
+        >
+          ルームを作成しました！
+        </h1>
 
-        {/* QRコード */}
-        {qrUrl && (
-          <div className="flex flex-col items-center gap-2 mt-4">
-            <img
-              src={qrUrl}
-              alt="Room QR Code"
-              className="border-2 border-white rounded"
-            />
-            <p className="text-sm text-gray-300 mt-2">
-              📱 QR を読み取るだけで参加できます
-            </p>
+        <div className="space-y-6 mb-10 w-full">
+          {/* ルームID表示エリア */}
+          <div className="flex flex-col gap-2">
+            <span className="text-pink-400 font-black text-sm tracking-widest uppercase">Room ID</span>
+            <div 
+              className="bg-black/60 border border-pink-500/50 rounded-2xl py-4 px-6 text-2xl font-mono font-bold text-white tracking-widest shadow-inner"
+              style={{ textShadow: '0 0 10px rgba(255, 0, 255, 0.5)' }}
+            >
+              {roomId}
+            </div>
+
           </div>
-        )}
 
-        {/* URL表示 */}
-        <p className="text-xs text-gray-400 mt-4 break-all">
-          参加URL：<br />
-          {joinUrl}
+          {/* 参加者数表示エリア */}
+          <div className="flex justify-between items-center bg-white/5 rounded-2xl px-6 py-4 border border-white/5">
+            <span className="font-bold text-gray-300">参加予定人数</span>
+            <span className="text-2xl font-black text-white" style={textStrokeStyle}>
+              {participants} <span className="text-sm">人</span>
+            </span>
+          </div>
+        </div>
+
+        {/* 進むボタン：さらに立体的に */}
+        <button
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-105 active:scale-95 text-white font-black py-5 rounded-2xl shadow-[0_8px_0_rgb(130,0,80)] transition-all text-2xl"
+          style={textStrokeStyle}
+          onClick={() => router.push(`/room/${roomId}/stage`)}
+        >
+          ステージへ進む
+        </button>
+
+        <p className="mt-6 text-gray-400 text-xs font-bold tracking-widest uppercase opacity-60">
+          Prepare for the Live Show
         </p>
       </div>
 
-      <button
-        className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded"
-        onClick={() => router.push(`/room/${roomId}/stage`)}
-      >
-        ステージへ進む
-      </button>
+      {/* 演出用の光 */}
+      <div className="absolute -top-20 -left-20 w-96 h-96 bg-purple-600/30 rounded-full blur-[150px] -z-10"></div>
+      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-600/30 rounded-full blur-[150px] -z-10"></div>
+
     </div>
   );
 }

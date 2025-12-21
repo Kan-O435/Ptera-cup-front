@@ -9,9 +9,12 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 
 const ROOMS = [
-  { id: 496668, name: "あわわ(◍꒪꒳​꒪◍)՞", image: "https://static.showroom-live.com/image/room/cover/d6a4ecc6edcfb03368d5f5d04c2f72a77a210d668449694f880ef5d5f747d549_m.jpeg" },
-  { id: 554312, name: "はおんはここです！", image: "https://static.showroom-live.com/image/room/cover/86f339b9a13c94b2170e0c731731efbc20bacf528187288a18122c5c010ba274_m.png" },
-  { id: 403154, name: "磯部 瑠紅（NGT48）", image: "https://static.showroom-live.com/image/room/cover/a9c23575b74422595fbfe01e904998124fb9c0db91166ca56730fc532b4f5638_m.png" },
+  { id: 496668, name: "発掘ハク子", image: "/images/hakuko.png" },
+  { id: 554312, name: "開発萌子", image: "/images/kaihatsu.png" },
+  { id: 496168, name: "環やま", image: "/images/tamakiyama.png" },
+  { id: 403154, name: "赤ぶる", image: "/images/akaburu.png" },
+  { id: 554112, name: "佐々木麻衣", image: "/images/sasaki.png" },
+  { id: 403354, name: "最強キアラ", image: "/images/kiara.png" },
 ];
 
 export default function RoomsPage() {
@@ -33,21 +36,19 @@ export default function RoomsPage() {
         </div>
       </button>
 
-      {/* メインのスライド（中間サイズ調整版） */}
+      {/* メインのスライド */}
       <main className={`flex-1 flex flex-col items-center justify-center transition-all duration-1000 h-full ${isOpen ? 'pr-64 blur-md opacity-30' : 'pr-0'}`}>
-        
-        {/* max-w-6xl でちょうど良いサイズ感に */}
         <div className="w-full max-w-6xl px-4"> 
           <Swiper
             effect={'coverflow'}
             centeredSlides={true}
-            slidesPerView={1.5}  // 中間の 1.5。左右もしっかり見えつつ真ん中も大きい
+            slidesPerView={1.5}
             loop={true}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[EffectCoverflow, Autoplay]}
             coverflowEffect={{ 
               rotate: 0, 
-              stretch: -20,    // 少し重ねることで密度をアップ
+              stretch: -20,
               depth: 200, 
               modifier: 1, 
               slideShadows: false 
@@ -97,17 +98,18 @@ export default function RoomsPage() {
               <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-pink-600 group-hover:text-white group-hover:rotate-90 transition-all text-xl font-light">+</span>
               <span className="font-bold text-lg">ルーム作成</span>
             </button>
-            <button className="flex items-center gap-5 text-gray-400 hover:text-white transition-all group">
-              <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-lg group-hover:bg-violet-600 group-hover:text-white transition-all">👤</span>
-              <span className="font-bold text-lg">プロフィール</span>
+            <button 
+              onClick={() => router.push('/room/upload')}  // ← ここを追加
+              className="flex items-center gap-5 text-gray-400 hover:text-white transition-all group"
+            >
+              <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-lg group-hover:bg-violet-600 group-hover:text-white transition-all">🎵</span>
+              <span className="font-bold text-lg">楽曲をアップロード</span>
             </button>
           </nav>
         </div>
       </aside>
 
-      
-
-      {/* 背景の装飾（薄いグラデーションの光） */}
+      {/* 背景の装飾 */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-500/10 blur-[120px] rounded-full pointer-events-none" />
     </div>

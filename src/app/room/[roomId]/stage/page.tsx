@@ -2,6 +2,8 @@
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Stage from './components/Stage';
 // import Audience from './components/Audience';
 import Penlights from './components/Penlights';
@@ -11,18 +13,26 @@ import { useState, useEffect } from 'react';
 const WS_URL = 'wss://xxxx.execute-api.ap-southeast-2.amazonaws.com/dev';
 
 export default function StagePage() {
-  const [participantCount, setParticipantCount] = useState(30); // 参加者数
 
-  // デモ用にランダムで参加者増減
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setParticipantCount(25 + Math.floor(Math.random() * 10));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const [isLiveEnded, setIsLiveEnded] = useState(false);
+  const router = useRouter();
+
+  // 🎵 コールSE
+  const hakukoRef = useRef<HTMLAudioElement | null>(null);
+  const fufuuRef = useRef<HTMLAudioElement | null>(null);
+  const ietoraRef = useRef<HTMLAudioElement | null>(null);
+
+  const playSE = (audioRef: React.RefObject<HTMLAudioElement>) => {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = 0; // 連打対応
+    audioRef.current.play();
+  };
+
+
 
   return (
-    <div className="h-screen w-screen bg-black">
+    <div className="h-screen w-screen bg-black relative">
+      {/* ====== 3D STAGE ====== */}
       <Canvas
         shadows
         camera={{
@@ -30,31 +40,20 @@ export default function StagePage() {
           fov: 45,
         }}
       >
-        {/* 全体の最低限の明るさ */}
         <ambientLight intensity={0.45} />
 
-        {/* ステージ全体を照らす正面ライト */}
         <directionalLight
           position={[0, 10, 12]}
           intensity={1.2}
         />
+       {/* アイドル専用スポットライト */}
 
-        {/* アイドル専用スポットライト */}
-        <spotLight
-          position={[0, 12, 3.5]}
-          intensity={3.5}
-          angle={0.35}
-          penumbra={0.6}
-          castShadow
-        />
 
-        {/* ステージ */}
-        <Stage />
 
-        {/* 観客ペンライト */}
-        <Penlights count={participantCount} wsUrl={WS_URL} />
+        <Stage onLiveEnd={() => setIsLiveEnded(true)} />
+        <Audience count={30} />
 
-        {/* 視点は固定 */}
+
         <OrbitControls
           enablePan={false}
           enableZoom={false}
@@ -62,6 +61,50 @@ export default function StagePage() {
           maxPolarAngle={Math.PI / 2.3}
         />
       </Canvas>
+
+      {/* ====== コールボタンUI ====== */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-6 z-50">
+        <button
+          onClick={() => playSE(hakukoRef)}
+          className="px-8 py-4 rounded-full bg-pink-600 text-white font-bold text-xl shadow-lg active:scale-95"
+        >
+          はくこ
+        </button>
+
+        <button
+          onClick={() => playSE(fufuuRef)}
+          className="px-8 py-4 rounded-full bg-blue-600 text-white font-bold text-xl shadow-lg active:scale-95"
+        >
+          ふーふー
+        </button>
+
+        <button
+          onClick={() => playSE(ietoraRef)}
+          className="px-8 py-4 rounded-full bg-purple-600 text-white font-bold text-xl shadow-lg active:scale-95"
+        >
+          家虎
+        </button>
+      </div>
+
+      {/* ====== Audio Elements ====== */}
+      <audio ref={hakukoRef} src="/bgm1.mp3" preload="auto" />
+      <audio ref={fufuuRef} src="/bgm2.mp3" preload="auto" />
+      <audio ref={ietoraRef} src="/bgm3.mp3" preload="auto" />
+
+      {/* ====== 終了モーダル ====== */}
+      {isLiveEnded && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg text-center text-white">
+            <p className="text-lg mb-4">ライブは終了しました</p>
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="bg-blue-500 px-4 py-2 rounded"
+            >
+              戻る
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
