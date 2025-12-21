@@ -53,9 +53,7 @@ export default function Idol({ position, delay = 0, userId }: IdolProps) {
     setVrm(vrmInstance);
   }, [gltf]);
 
-  // アニメーションループ
-  // アニメーションループ
-  // アニメーションループ
+  
   useFrame((state, delta) => {
     if (!vrm || !vrm.humanoid) return;
 

@@ -9,9 +9,12 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 
 const ROOMS = [
-  { id: 496668, name: "あわわ(◍꒪꒳​꒪◍)՞", image: "https://static.showroom-live.com/image/room/cover/d6a4ecc6edcfb03368d5f5d04c2f72a77a210d668449694f880ef5d5f747d549_m.jpeg" },
-  { id: 554312, name: "はおんはここです！", image: "https://static.showroom-live.com/image/room/cover/86f339b9a13c94b2170e0c731731efbc20bacf528187288a18122c5c010ba274_m.png" },
-  { id: 403154, name: "磯部 瑠紅（NGT48）", image: "https://static.showroom-live.com/image/room/cover/a9c23575b74422595fbfe01e904998124fb9c0db91166ca56730fc532b4f5638_m.png" },
+  { id: 496668, name: "発掘ハク子", image: "/images/hakuko.png" },
+  { id: 554312, name: "開発萌子", image: "/images/kaihatsu.png" },
+  { id: 496168, name: "環やま", image: "/images/tamakiyama.png" },
+  { id: 403154, name: "赤ぶる", image: "/images/akaburu.png" },
+  { id: 554112, name: "佐々木麻衣", image: "/images/sasaki.png" },
+  { id: 403354, name: "最強キアラ", image: "/images/kiara.png" },
 ];
 
 export default function RoomsPage() {
@@ -43,7 +46,7 @@ export default function RoomsPage() {
             centeredSlides={true}
             slidesPerView={1.5}  // 中間の 1.5。左右もしっかり見えつつ真ん中も大きい
             loop={true}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[EffectCoverflow, Autoplay]}
             coverflowEffect={{ 
               rotate: 0, 
@@ -98,8 +101,8 @@ export default function RoomsPage() {
               <span className="font-bold text-lg">ルーム作成</span>
             </button>
             <button className="flex items-center gap-5 text-gray-400 hover:text-white transition-all group">
-              <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-lg group-hover:bg-violet-600 group-hover:text-white transition-all">👤</span>
-              <span className="font-bold text-lg">プロフィール</span>
+              <span className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-lg group-hover:bg-violet-600 group-hover:text-white transition-all">🎵</span>
+              <span className="font-bold text-lg">楽曲をアップロード</span>
             </button>
           </nav>
         </div>
