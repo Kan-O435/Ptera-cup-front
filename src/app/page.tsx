@@ -44,7 +44,7 @@ export default function HomePage() {
         {/* ログインボタン */}
         <button
           onClick={() => router.push('/auth?mode=login')}
-          className="w-full bg-white text-white font-black py-4 rounded-2xl hover:bg-gray-100 transition-all active:translate-y-1 active:shadow-none"
+          className="w-full bg-gray-500 text-white font-black py-4 rounded-2xl hover:bg-gray-600 transition-all active:translate-y-1 active:shadow-none"
           style={textStrokeStyle}
         >
           ログイン

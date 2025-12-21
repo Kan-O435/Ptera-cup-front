@@ -14,6 +14,7 @@ export default function StagePage() {
   // 🎵 コールSE
   const hakukoRef = useRef<HTMLAudioElement | null>(null);
   const fufuuRef = useRef<HTMLAudioElement | null>(null);
+  const ietoraRef = useRef<HTMLAudioElement | null>(null);
 
   const playSE = (audioRef: React.RefObject<HTMLAudioElement>) => {
     if (!audioRef.current) return;
@@ -72,11 +73,19 @@ export default function StagePage() {
         >
           ふーふー
         </button>
+
+        <button
+          onClick={() => playSE(ietoraRef)}
+          className="px-8 py-4 rounded-full bg-purple-600 text-white font-bold text-xl shadow-lg active:scale-95"
+        >
+          家虎
+        </button>
       </div>
 
       {/* ====== Audio Elements ====== */}
       <audio ref={hakukoRef} src="/bgm1.mp3" preload="auto" />
       <audio ref={fufuuRef} src="/bgm2.mp3" preload="auto" />
+      <audio ref={ietoraRef} src="/bgm3.mp3" preload="auto" />
 
       {/* ====== 終了モーダル ====== */}
       {isLiveEnded && (
