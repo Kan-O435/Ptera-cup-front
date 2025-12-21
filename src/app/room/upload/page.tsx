@@ -19,7 +19,7 @@ export default function UploadPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (fileName) {
-      setMessage(`"${fileName}" の保存に成功しました！（※ダミー）`);
+      setMessage(`"${fileName}" の保存に成功しました！`);
     } else {
       setMessage('ファイルを選択してください。');
     }
