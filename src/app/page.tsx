@@ -4,22 +4,48 @@ import { useRouter } from 'next/navigation';
 export default function HomePage() {
   const router = useRouter();
 
+  // 共通の縁取りスタイル
+  const textStrokeStyle = {
+    textShadow: `
+      3px 3px 0 #000,
+      -3px 3px 0 #000,
+      3px -3px 0 #000,
+      -3px -3px 0 #000,
+      0 4px 10px rgba(0,0,0,0.8)
+    `
+  };
+
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-pink-900 to-gray-900 text-white gap-8 p-4">
+    <div 
+      className="w-screen h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative overflow-hidden"
+      style={{ backgroundImage: "url('/bg/bg.png')" }}
+    >
+      {/* 背景オーバーレイ */}
+      <div className="absolute inset-0 bg-black/30 -z-10"></div>
+
       {/* タイトルセクション */}
-      <div className="text-center">
-        <h1 className="text-5xl font-black italic tracking-tighter bg-gradient-to-r from-red-400 to-pink-600 bg-clip-text text-transparent mb-2">
+      <div className="text-center z-10 mb-8">
+        <h1 
+          className="text-8xl font-black italic tracking-tighter text-white mb-4"
+          style={textStrokeStyle}
+        >
           AI-dol
         </h1>
-        <p className="text-gray-400 font-medium">離れていても、みんなでコールしよう。</p>
+        <p 
+          className="text-4xl font-black italic tracking-tighter text-white mb-2"
+          style={textStrokeStyle}
+        >
+          離れていても、みんなでコールしよう。
+        </p>
       </div>
 
       {/* ボタンエリア */}
-      <div className="flex flex-col gap-4 w-full max-w-xs">
+      <div className="text-2xl font-black italic tracking-tighter text-white mb-4">
         {/* ログインボタン */}
         <button
           onClick={() => router.push('/auth?mode=login')}
-          className="w-full bg-white text-gray-900 font-bold py-4 rounded-2xl hover:bg-gray-200 transition-all shadow-xl"
+          className="w-full bg-white text-white font-black py-4 rounded-2xl hover:bg-gray-100 transition-all active:translate-y-1 active:shadow-none"
+          style={textStrokeStyle}
         >
           ログイン
         </button>
@@ -27,19 +53,16 @@ export default function HomePage() {
         {/* サインアップボタン */}
         <button
           onClick={() => router.push('/auth?mode=signup')}
-          className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-4 rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-pink-500/20"
+          className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-black py-4 rounded-2xl hover:scale-105 transition-transform shadow-[0_6px_0_rgb(150,0,50)]"
+          style={{ ...textStrokeStyle, fontSize: '1.5rem' }}
         >
           新規アカウント作成
         </button>
-
-        
-
-        
       </div>
       
-      {/* 演出用の背景ぼかし装飾 */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600/20 rounded-full blur-[100px] -z-10"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-600/20 rounded-full blur-[100px] -z-10"></div>
+      {/* 演出用の光（色を少し強めました） */}
+      <div className="absolute -top-10 -left-10 w-80 h-80 bg-purple-600/30 rounded-full blur-[120px] -z-10"></div>
+      <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-pink-600/30 rounded-full blur-[120px] -z-10"></div>
     </div>
   );
 }
